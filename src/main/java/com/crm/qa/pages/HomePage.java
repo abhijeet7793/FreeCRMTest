@@ -10,22 +10,24 @@ import com.crm.qa.base.TestBase;
 
 public class HomePage extends TestBase {
 
-	@FindBy(xpath = "//td[contains(text(),'User: Naveen K')]")
-	@CacheLookup
-	WebElement userNameLabel;
+	@FindBy(xpath = "//span[@class='user-display']")
+	@CacheLookup  // it will store the userNamelabel in cache. Whenever you are interacting with element, instead of page it will get the element from cache
+	//speed performance for the framework is improved
+	//it will create one small memory & it will store that element in memory, cache i.e. called cache memory
+	WebElement userNameLabel;  //it looks for the element in the DOM
 
-	@FindBy(xpath = "//a[contains(text(),'Contacts')]")
+	@FindBy(xpath = "//div[@id='main-nav']//a[3]")
 	WebElement contactsLink;
-	
-	@FindBy(xpath = "//a[contains(text(),'New Contact')]")
-	WebElement newContactLink;
-	
 
-	@FindBy(xpath = "//a[contains(text(),'Deals')]")
+
+	@FindBy(xpath = "//div[@id='main-nav']//a[5]")
 	WebElement dealsLink;
 
-	@FindBy(xpath = "//a[contains(text(),'Tasks')]")
+	@FindBy(xpath = "//body//a[6]")
 	WebElement tasksLink;
+	
+	@FindBy(xpath="//div[@class='header item']")
+	WebElement crmLogo;
 
 	// Initializing the Page Objects:
 	public HomePage() {
@@ -36,14 +38,18 @@ public class HomePage extends TestBase {
 		return driver.getTitle();
 	}
 	
+	public boolean validateCRMImage() {
+		return crmLogo.isDisplayed();
+	}
 	
-	public boolean verifyCorrectUserName(){
-		return userNameLabel.isDisplayed();
+	public String verifyCorrectUserName(){
+		return userNameLabel.getText();
 	}
 	
 	public ContactsPage clickOnContactsLink(){
 		contactsLink.click();
 		return new ContactsPage();
+		//whenever after clicking on any link is navigating to next page, then the method should return that page object
 	}
 	
 	public DealsPage clickOnDealsLink(){
@@ -56,18 +62,7 @@ public class HomePage extends TestBase {
 		return new TasksPage();
 	}
 	
-	public void clickOnNewContactLink(){
-		Actions action = new Actions(driver);
-		action.moveToElement(contactsLink).build().perform();
-		newContactLink.click();
-		
-	}
-	
-	
-	
-	
-	
-	
+
 	
 
 }

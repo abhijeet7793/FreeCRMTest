@@ -13,7 +13,7 @@ import com.crm.qa.util.TestUtil;
 
 public class HomePageTest extends TestBase {
 	LoginPage loginPage;
-	HomePage homePage;
+	HomePage homePage; //this is object reference
 	TestUtil testUtil;
 	ContactsPage contactsPage;
 
@@ -26,31 +26,39 @@ public class HomePageTest extends TestBase {
 	//@test -- execute test case
 	//after each test case -- close the browser
 	
-	@BeforeMethod
+	@BeforeMethod  ////before each test case -- launch the browser and login
 	public void setUp() {
 		initialization();
-		testUtil = new TestUtil();
+		testUtil = new TestUtil(); //create the object to call swtchtoFrame method available in TestUtil class
 		contactsPage = new ContactsPage();
-		loginPage = new LoginPage();
-		homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
+		loginPage = new LoginPage(); //we need to create loginPage object to call the login methods
+		homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));  //prop is also initialized here using inheritance
+		//login method is returning HomePage
 	}
 	
 	
 	@Test(priority=1)
 	public void verifyHomePageTitleTest(){
-		String homePageTitle = homePage.verifyHomePageTitle();
-		Assert.assertEquals(homePageTitle, "CRMPRO","Home page title not matched");
+		String homePageTitle = homePage.verifyHomePageTitle();   //object.method
+		System.out.println(homePageTitle);
+		Assert.assertEquals(homePageTitle, "Cogmento CRM");
 	}
 	
 	@Test(priority=2)
-	public void verifyUserNameTest(){
-		testUtil.switchToFrame();
-		Assert.assertTrue(homePage.verifyCorrectUserName());
+	public void crmLogoImageTest(){
+		boolean flag = homePage.validateCRMImage();
+		Assert.assertTrue(flag);
 	}
 	
 	@Test(priority=3)
+	public void verifyUserNameTest(){
+		String name=homePage.verifyCorrectUserName();
+		Assert.assertEquals(name, "John Smit1h");
+		System.out.println(name);
+	}
+	
+	@Test(priority=4)
 	public void verifyContactsLinkTest(){
-		testUtil.switchToFrame();
 		contactsPage = homePage.clickOnContactsLink();
 	}
 	

@@ -10,19 +10,22 @@ import com.crm.qa.base.TestBase;
 
 public class ContactsPage extends TestBase {
 
-	@FindBy(xpath = "//td[contains(text(),'Contacts')]")
+	@FindBy(xpath = "//div[@id='main-nav']//a[3]")
 	WebElement contactsLabel;
 	
-	@FindBy(id="first_name")
+	@FindBy(xpath = "//button[contains(text(),'New')]")
+	WebElement newContactLink;
+	
+	@FindBy(name="first_name")
 	WebElement firstName;
 	
-	@FindBy(id="surname")
+	@FindBy(name="last_name")
 	WebElement lastName;
 	
-	@FindBy(name="client_lookup")
-	WebElement company;
+	@FindBy(xpath = "//input[@placeholder='Email address']")
+	WebElement email;
 	
-	@FindBy(xpath = "//input[@type='submit' and @value='Save']")
+	@FindBy(xpath = "//button[@class='ui linkedin button']")
 	WebElement saveBtn;
 	
 	
@@ -37,21 +40,31 @@ public class ContactsPage extends TestBase {
 		return contactsLabel.isDisplayed();
 	}
 	
+	public void clickContactslink()
+	{
+		contactsLabel.click();
+	}
 	
-	public void selectContactsByName(String name){
-		driver.findElement(By.xpath("//a[text()='"+name+"']//parent::td[@class='datalistrow']"
-				+ "//preceding-sibling::td[@class='datalistrow']//input[@name='contact_id']")).click();
+	public void clickOnNewContactLink(){
+		newContactLink.click();
+		
 	}
 	
 	
-	public void createNewContact(String title, String ftName, String ltName, String comp){
-		Select select = new Select(driver.findElement(By.name("title")));
-		select.selectByVisibleText(title);
+	public void selectContactsByName(String name){
+		driver.findElement(By.xpath("//td[text()='"+name+"']//preceding-sibling::td//div[@class=\"ui fitted read-only checkbox\"]")).click();
 		
-		firstName.sendKeys(ftName);
-		lastName.sendKeys(ltName);
-		company.sendKeys(comp);
+		//td[text()='"+name+"']//preceding-sibling::td//div[@class="ui fitted read-only checkbox"]
+	}
+	
+	
+	public void createNewContact(String ftName, String ltName, String emailid) throws InterruptedException{
+	
+		firstName.sendKeys(ftName); //firstname
+		lastName.sendKeys(ltName); // lastname
+		email.sendKeys(emailid); //company
 		saveBtn.click();
+		Thread.sleep(2000);
 		
 	}
 	

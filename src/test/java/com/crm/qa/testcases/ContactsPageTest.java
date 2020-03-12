@@ -36,7 +36,7 @@ public class ContactsPageTest extends TestBase{
 	
 	   
 	public ContactsPageTest(){
-			super();
+			super(); //initialize properties
 			
 	}
 	
@@ -50,27 +50,34 @@ public class ContactsPageTest extends TestBase{
 		loginPage = new LoginPage();
 		homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
 		TestUtil.runTimeInfo("error", "login successful");
-		testUtil.switchToFrame();
-		contactsPage = homePage.clickOnContactsLink();
+		//testUtil.switchToFrame();  //as contacts link is available inside the frame
+		contactsPage = homePage.clickOnContactsLink();   //contactsPage is a reference
 	}
 	
-	@Test(priority=1)
+	/*
+	@Test(enabled =false)
 	public void verifyContactsPageLabel(){
 		Assert.assertTrue(contactsPage.verifyContactsLabel(), "contacts label is missing on the page");
 	}
+
+	@Test(priority=1)
+	public void clickContactsPageLabel(){
+		contactsPage.clickContactslink();
+	}
+	
+	*/
+	@Test(priority=1)
+	public void selectSingleContactsTest(){
+		contactsPage.selectContactsByName("Mukta Sharma");
+	}
 	
 	@Test(priority=2)
-	public void selectSingleContactsTest(){
-		contactsPage.selectContactsByName("test2 test2");
-	}
-	
-	@Test(priority=3)
 	public void selectMultipleContactsTest(){
-		contactsPage.selectContactsByName("test2 test2");
-		contactsPage.selectContactsByName("ui uiii");
+		contactsPage.selectContactsByName("Tom Peter");
+		contactsPage.selectContactsByName("Tom1 Peter1");
 
 	}
-	
+	/*
 	@DataProvider
 	public Object[][] getCRMTestData(){
 		Object data[][] = TestUtil.getTestData(sheetName);
@@ -78,14 +85,13 @@ public class ContactsPageTest extends TestBase{
 	}
 	
 	
-	@Test(priority=4, dataProvider="getCRMTestData")
-	public void validateCreateNewContact(String title, String firstName, String lastName, String company){
-		homePage.clickOnNewContactLink();
-		//contactsPage.createNewContact("Mr.", "Tom", "Peter", "Google");
-		contactsPage.createNewContact(title, firstName, lastName, company);
+	@Test(priority=1, dataProvider="getCRMTestData")
+	public void validateCreateNewContact(String firstname, String lastname, String email) throws InterruptedException{
+		contactsPage.clickOnNewContactLink();
+		//contactsPage.createNewContact("Tom1", "Peter1", "Google1@gmail.com");
+		contactsPage.createNewContact(firstname, lastname, email);
 		
 	}
-	
 	
 
 	@AfterMethod
@@ -93,7 +99,6 @@ public class ContactsPageTest extends TestBase{
 		driver.quit();
 	}
 	
-	
-	
+	*/
 	
 }

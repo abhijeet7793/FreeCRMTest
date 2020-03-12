@@ -10,34 +10,35 @@ import com.crm.qa.pages.HomePage;
 import com.crm.qa.pages.LoginPage;
 
 public class LoginPageTest extends TestBase{
-	LoginPage loginPage;
-	HomePage homePage;
+	LoginPage loginPage;  //created at class level so that it can be used throughout the program
+	HomePage homePage; // Homeapge reference variable
 	
 	public LoginPageTest(){
-		super();
+		super();  
+		//It is important(compulsary) to create Testbase Class Constructor to initialize properties also. We are using prop variable in initialization method
 	}
 	
 	@BeforeMethod
 	public void setUp(){
-		initialization();
+		initialization();  //coming from TestBase
 		loginPage = new LoginPage();	
 	}
 	
 	@Test(priority=1)
 	public void loginPageTitleTest(){
-		String title = loginPage.validateLoginPageTitle();
-		Assert.assertEquals(title, "#1 Free CRM for Any Business: Online Customer Relationship Software");
+		String title = loginPage.validateLoginPageTitle();   //object.method   --all non-static methods can be accessed
+		System.out.println(title);
+		Assert.assertEquals(title, "Cogmento CRM");
 	}
+	
 	
 	@Test(priority=2)
-	public void crmLogoImageTest(){
-		boolean flag = loginPage.validateCRMImage();
-		Assert.assertTrue(flag);
-	}
-	
-	@Test(priority=3)
 	public void loginTest(){
 		homePage = loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
+		//this method is returning HomePage class object and hence we are storing it in homePage reference variable
+		//loginPage.login(prop.getProperty("username"), prop.getProperty("password")) = new HomePage()
+		//same as follows
+		//HomePage homePage = new Homepage();
 	}
 	
 	
